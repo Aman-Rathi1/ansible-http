@@ -1,0 +1,27 @@
+- name: installing web server
+  package:
+         name: "httpd"
+         state: present
+- name: service start
+  service:
+         name: "httpd"
+         state: started
+- name: creating direc for  confi.
+  file:
+        path: "/etc/httpd/conf.d/aman.conf"
+        state: touch
+- name: copy files in conf. direc
+  template:
+        src: "../templates/aman.conf"
+        dest: "/etc/httpd/conf.d/aman.conf"
+- name: creating direc for sites
+  file:
+        path: "/var/www/aman"
+        state: directory
+- name: copy files of sites
+  copy:
+         src: "../templates/web.php"
+         dest: "/var/www/aman"
+  notify:
+  - restart httpd
+
